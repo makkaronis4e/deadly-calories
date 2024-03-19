@@ -1,0 +1,16 @@
+@font-face {
+    font-family: "mk2";
+    src: url('../fonts/mk2.ttf');
+    src: url('../fonts/mk2.ttf') format("truetype") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "mk1";
+    src: url('../fonts/mk1.ttf');
+    src: url('../fonts/mk1.ttf') format("truetype") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
