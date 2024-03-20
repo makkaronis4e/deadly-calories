@@ -1,31 +1,30 @@
 <template>
     <div class="wrapper" @click="handleEvent">
         <div class="tag">
-            <div class="tag__text">Deadly Calories Edition</div>
+            <div class="tag__text">Deadly Calories Version</div>
             <Kanelboller size="40" />
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import Kanelboller from '@/components/Kanelboller.vue';
-import { defineComponent, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { defineComponent } from 'vue';
 
-const router = useRouter()
-
-    onMounted(() => {
-		document.addEventListener('keydown', handleEvent);
-	});
-
-    onUnmounted(() => {
-        document.removeEventListener('keydown', handleEvent);
-    });
-
-	const handleEvent = () => {
-		router.push('/config');
-	};
-
+export default defineComponent({
+    components: { Kanelboller },
+    created: function () {
+        document.addEventListener('keydown', this.handleEvent);
+    },
+    unmounted() {
+        document.removeEventListener('keydown', this.handleEvent);
+    },
+    methods: {
+        handleEvent() {
+            this.$router.push('/about');
+        },
+    },
+});
 </script>
 
 <style scoped lang="scss">
