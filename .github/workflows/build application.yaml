@@ -38,7 +38,7 @@ jobs:
         run: pnpm install
 
       - name: Build App
-        run: npm run build
+        run: VITE_APP_VERSION=${{ steps.version.outputs.version }} npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
