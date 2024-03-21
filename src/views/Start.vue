@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper" @click="handleEvent">
         <div class="tag">
-            <div class="tag__text">Deadly Calories Edition</div>
+            <div class="tag__text">{{ $t('start.deadly_calories_edition') }}</div>
             <Kanelboller size="40" />
         </div>
     </div>
@@ -42,7 +42,7 @@ onUnmounted(() => {
     top: 5rem;
     display: flex;
     align-items: center;
-    background-color: #28a112;
+    background-color: var(--mk-main-color);
     padding: 4px 5rem;
     transform: rotate(45deg);
 

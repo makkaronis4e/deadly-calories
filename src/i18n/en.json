@@ -1,0 +1,12 @@
+{
+    "start": {
+        "deadly_calories_edition": "Deadly Calories Edition"
+    },
+    "config": {
+        "create_config": "Configure Game",
+        "initial_calories": "Initial Calories Points",
+        "poison_chance": "Poison Chance",
+        "calories_range": "Calories Range",
+        "serve": "Serve Kaneboller!"
+    }
+}

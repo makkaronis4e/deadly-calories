@@ -3,7 +3,7 @@
         <div class="control">
             <div class="control__header">
                 <img src="../assets/img/poison.webp" alt="Poison" />
-                <span>Poison Chance</span>
+                <span>{{ $t('config.poison_chance') }}</span>
             </div>
             <v-text-field
                 v-model.number="props.configForm!.poisonChance"
@@ -16,7 +16,7 @@
         <div class="control">
             <div class="control__header">
                 <img src="../assets/img/hp.webp" alt="Health points" />
-                <span>Initial Calories Points</span>
+                <span>{{ $t('config.initial_calories') }}</span>
             </div>
             <v-text-field
                 v-model.number="props.configForm!.startingCalories"
@@ -29,7 +29,7 @@
         <div class="control">
             <div class="control__header">
                 <Kanelboller size="24" />
-                <span>Calories Range</span>
+                <span>{{ $t('config.calories_range') }}</span>
             </div>
             <v-range-slider
                 v-model="props.configForm!.caloriesRange"

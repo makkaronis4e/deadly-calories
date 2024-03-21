@@ -1,7 +1,7 @@
 <template>
     <form class="wrapper" @submit.prevent="handleSubmit">
         <div class="left-col" v-if="configForm">
-            <h3 class="title">Configure Game</h3>
+            <h3 class="title">{{ $t('config.create_config') }}</h3>
             <CompetitionConfig :config-form="configForm" />
         </div>
         <div class="right-col">
@@ -13,7 +13,9 @@
                     :fighters="availableFighters"
                 />
             </div>
-            <v-btn type="submit" class="start" size="x-large" color="#28a112">Serve Kaneboller!</v-btn>
+            <v-btn type="submit" class="start" size="x-large" color="var(--mk-main-color)">{{
+                $t('config.serve')
+            }}</v-btn>
         </div>
     </form>
 </template>
@@ -52,7 +54,7 @@ const handleSubmit = (payload: Event) => {
         min-height: 100vh;
         display: flex;
         justify-content: center;
-        padding: 1rem;
+        padding: 2rem 1rem 1rem;
         background-image: url('src/assets/img/config-bg.png');
         background-repeat: repeat;
 
@@ -68,7 +70,7 @@ const handleSubmit = (payload: Event) => {
                 font-family: 'mk2', serif;
                 font-size: 3rem;
                 margin-bottom: 1rem;
-                color: yellow;
+                color: var(--mk-title-color);
                 text-shadow:
                     10px 10px 25px rgb(81, 67, 21),
                     -10px 10px 25px rgb(81, 67, 21),

@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { Fighter } from '@/common/utils/models/classes';
-import { onMounted } from 'vue';
 
 const props = defineProps({
     fighters: Array<Fighter>,
     activeFighter: Fighter,
 });
 defineEmits<{ (event: 'fighterSelected', value: Fighter): void }>();
-onMounted(() => {
-    console.log(props.fighters);
-});
 </script>
 
 <template>
@@ -71,7 +67,7 @@ onMounted(() => {
         cursor: pointer;
 
         &.active {
-            outline: 0.5rem solid #28a112;
+            outline: 0.5rem solid var(--mk-main-color);
 
             img {
                 filter: brightness(120%);

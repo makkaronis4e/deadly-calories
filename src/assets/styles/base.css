@@ -36,6 +36,16 @@
     --section-gap: 160px;
 }
 
+.light {
+    --mk-title-color: #4d91e8;
+    --mk-main-color: #c21414;
+}
+
+.dark {
+    --mk-title-color: yellow;
+    --mk-main-color: #28a112;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --color-background: var(--vt-c-black);
