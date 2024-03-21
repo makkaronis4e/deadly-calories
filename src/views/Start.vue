@@ -9,23 +9,22 @@
 
 <script setup lang="ts">
 import Kanelboller from '@/components/Kanelboller.vue';
-import { defineComponent, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 
-    onMounted(() => {
-		document.addEventListener('keydown', handleEvent);
-	});
+const handleEvent = () => {
+    router.push('/config');
+};
 
-    onUnmounted(() => {
-        document.removeEventListener('keydown', handleEvent);
-    });
+onMounted(() => {
+    document.addEventListener('keydown', handleEvent);
+});
 
-	const handleEvent = () => {
-		router.push('/config');
-	};
-
+onUnmounted(() => {
+    document.removeEventListener('keydown', handleEvent);
+});
 </script>
 
 <style scoped lang="scss">

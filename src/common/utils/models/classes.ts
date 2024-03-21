@@ -1,5 +1,5 @@
 import type { FighterLog } from '@/common/utils/models/interfaces';
-import { AnimationType } from '@/common/utils/constants/fighters'
+import { AnimationType } from '@/common/utils/constants/fighters';
 
 export class Fighter {
     name: string;
@@ -44,8 +44,9 @@ export class Fighter {
     }
 
     updateAnimation(): void {
-        const type = this.health <= 0 ? AnimationType.Dead : this.health < 3 ? AnimationType.Damaged : AnimationType.Normal;
-        this.animatedImage = `./src/assets/img/fighters/${type}/${this.name.toLowerCase()}.gif`
+        const type =
+            this.health <= 0 ? AnimationType.Dead : this.health < 3 ? AnimationType.Damaged : AnimationType.Normal;
+        this.animatedImage = `./src/assets/img/fighters/${type}/${this.name.toLowerCase()}.gif`;
     }
 
     burnCalories() {

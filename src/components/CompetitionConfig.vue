@@ -1,57 +1,80 @@
 <template>
-    <div class="wrapper" @click="handleEvent">
-        <div class="tag">
-            <div class="tag__text">Deadly Calories Version</div>
-            <Kanelboller size="40" />
+    <div class="config-wrapper">
+        <div class="control">
+            <div class="control__header">
+                <img src="../assets/img/poison.webp" alt="Poison" />
+                <span>Poison Chance</span>
+            </div>
+            <v-text-field
+                v-model.number="props.configForm!.poisonChance"
+                hide-details
+                max="0.1"
+                min="0.9"
+                single-line
+            />
+        </div>
+        <div class="control">
+            <div class="control__header">
+                <img src="../assets/img/hp.webp" alt="Health points" />
+                <span>Initial Calories Points</span>
+            </div>
+            <v-text-field
+                v-model.number="props.configForm!.startingCalories"
+                hide-details
+                :max="10"
+                :min="3"
+                single-line
+            />
+        </div>
+        <div class="control">
+            <div class="control__header">
+                <Kanelboller size="24" />
+                <span>Calories Range</span>
+            </div>
+            <v-range-slider
+                v-model="props.configForm!.caloriesRange"
+                max="3"
+                min="0.1"
+                step="0.1"
+                thumb-size="10"
+                class="align-center"
+                thumb-label="always"
+            />
         </div>
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import Kanelboller from '@/components/Kanelboller.vue';
-import { defineComponent } from 'vue';
 
-export default defineComponent({
-    components: { Kanelboller },
-    created: function () {
-        document.addEventListener('keydown', this.handleEvent);
-    },
-    unmounted() {
-        document.removeEventListener('keydown', this.handleEvent);
-    },
-    methods: {
-        handleEvent() {
-            this.$router.push('/about');
-        },
-    },
+const props = defineProps({
+    configForm: Object,
 });
 </script>
 
 <style scoped lang="scss">
-.wrapper {
-    height: 100vh;
-    background: url('../assets/img/welcome_bg.webp') no-repeat center;
-    background-size: cover;
-    position: relative;
-    cursor: pointer;
+.config-wrapper {
+    max-width: 600px;
 }
 
-.tag {
-    position: fixed;
-    right: -6rem;
-    top: 5rem;
+.control {
     display: flex;
-    align-items: center;
-    background-color: #28a112;
-    padding: 4px 5rem;
-    transform: rotate(45deg);
+    flex-direction: column;
+    margin-bottom: 3rem;
 
-    &__text {
-        font-family: 'mk2', serif;
-        font-weight: 500;
-        margin-right: 1rem;
-        color: white;
-        text-shadow: 2px 2px 2px #181818;
+    &__header {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+
+        img {
+            height: 24px;
+        }
+
+        span {
+            margin-left: 1rem;
+            font-size: 1.2rem;
+        }
     }
 }
 </style>
