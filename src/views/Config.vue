@@ -20,18 +20,18 @@
     </form>
 </template>
 <script setup lang="ts">
-import { onMounted, type Ref } from 'vue';
+import { onMounted, type Ref, watch } from 'vue'
 import { FIGHTERS } from '@/common/utils/constants/fighters';
 import { Fighter } from '@/common/utils/models/classes';
 import FighterGrid from '@/components/FighterGrid.vue';
 import CompetitionConfig from '@/components/CompetitionConfig.vue';
 import { ref } from 'vue';
 import { useConfigStore } from '@/stores/config';
-import type { ConfigForm } from '@/common/utils/models/interfaces';
+import type { GameConfig } from '@/common/utils/models/interfaces';
 let availableFighters: Ref<Fighter[]> = ref([]);
 let selectedFighter: Ref<Fighter | null> = ref(null);
 const configStore = useConfigStore();
-const configForm: Ref<ConfigForm> = ref({
+const configForm: Ref<GameConfig> = ref({
     caloriesRange: [0.2, 2],
     poisonChance: 0.2,
     startingCalories: 5,
@@ -39,6 +39,10 @@ const configForm: Ref<ConfigForm> = ref({
 onMounted(() => {
     availableFighters.value = FIGHTERS.map((fighter) => new Fighter(fighter));
     selectedFighter.value = availableFighters.value[0];
+});
+
+watch(configForm.value, (newConfig) => {
+	console.log(newConfig);
 });
 
 const setSelectedFighter = (fighter: Fighter) => {

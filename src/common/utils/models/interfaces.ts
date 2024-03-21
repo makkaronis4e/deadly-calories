@@ -3,7 +3,7 @@ export interface FighterLog {
     events: string[];
 }
 
-export interface ConfigForm {
+export interface GameConfig {
     caloriesRange: number[];
     poisonChance: number;
     startingCalories: number;

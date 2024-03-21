@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { ConfigForm } from '@/common/utils/models/interfaces';
+import type { GameConfig } from '@/common/utils/models/interfaces';
 
 export const useConfigStore = defineStore('config', {
     state: () => ({
@@ -10,7 +10,7 @@ export const useConfigStore = defineStore('config', {
         },
     }),
     actions: {
-        updateConfig(payload: ConfigForm) {
+        updateConfig(payload: GameConfig) {
             this.config = payload;
         },
     },

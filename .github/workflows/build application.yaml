@@ -20,6 +20,7 @@ jobs:
         with:
           tag_prefix: ''
           version_format: '${major}.${minor}.${patch}.${increment}'
+
       - name: Set output version
         id: set-output-version
         run: echo "version=${{ steps.version.outputs.version }}" >> "$GITHUB_OUTPUT"
@@ -38,7 +39,7 @@ jobs:
         run: pnpm install
 
       - name: Build App
-        run: VITE_APP_VERSION=${{ steps.version.outputs.version }} npm run build
+        run: VITE_GH_BASE=/deadly-calories/ VITE_APP_VERSION=${{ steps.version.outputs.version }} npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
