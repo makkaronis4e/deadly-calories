@@ -1,18 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import StartView from '../views/Start.vue';
+import StartView from '../views/Game.vue';
+import Config from '@/views/Config.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: '/',
-            name: 'start',
-            component: StartView,
+            name: 'config',
+            component: Config,
         },
         {
-            path: '/config',
-            name: 'config',
-            component: () => import('../views/Config.vue'),
+            path: '/game',
+            name: 'game',
+            component: () => import('../views/Game.vue'),
         },
     ],
 });
