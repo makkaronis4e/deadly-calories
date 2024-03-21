@@ -48,6 +48,7 @@ const onThemeChange = () => {
 header {
     height: 2rem;
     width: 100%;
+	z-index: 100;
     position: fixed;
     padding: 1rem 2rem 0;
     display: flex;

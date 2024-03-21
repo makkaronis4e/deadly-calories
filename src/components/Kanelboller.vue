@@ -1,5 +1,5 @@
 <template>
-    <img class="kanelboller-image" :style="componentStyles" src="../assets/img/kanelboller.png" alt="Kanelboller" />
+    <img class="kanelboller-image" :style="componentStyles" src="/img/kanelboller.png" alt="Kanelboller" />
 </template>
 
 <script lang="ts">

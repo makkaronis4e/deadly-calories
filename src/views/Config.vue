@@ -55,7 +55,7 @@ const handleSubmit = (payload: Event) => {
         display: flex;
         justify-content: center;
         padding: 2rem 1rem 1rem;
-        background-image: url('src/assets/img/config-bg.png');
+        background-image: url('/img/config-bg.png');
         background-repeat: repeat;
 
         .left-col {

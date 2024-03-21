@@ -30,7 +30,7 @@ onUnmounted(() => {
 <style scoped lang="scss">
 .wrapper {
     height: 100vh;
-    background: url('../assets/img/welcome_bg.webp') no-repeat center;
+    background: url('/img/welcome_bg.webp') no-repeat center;
     background-size: cover;
     position: relative;
     cursor: pointer;

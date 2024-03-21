@@ -20,8 +20,8 @@ export class Fighter {
 
     constructor(name: string, calories: number = 5) {
         this.name = name;
-        this.animatedImage = `./src/assets/img/fighters/${AnimationType.Normal}/${name.toLowerCase()}.gif`;
-        this.staticImage = `./src/assets/img/fighters/${AnimationType.Static}/${name.toLowerCase()}.png`;
+        this.animatedImage = `./img/fighters/${AnimationType.Normal}/${name.toLowerCase()}.gif`;
+        this.staticImage = `./img/fighters/${AnimationType.Static}/${name.toLowerCase()}.png`;
         this.health = calories;
     }
 
@@ -46,7 +46,7 @@ export class Fighter {
     updateAnimation(): void {
         const type =
             this.health <= 0 ? AnimationType.Dead : this.health < 3 ? AnimationType.Damaged : AnimationType.Normal;
-        this.animatedImage = `./src/assets/img/fighters/${type}/${this.name.toLowerCase()}.gif`;
+        this.animatedImage = `./img/fighters/${type}/${this.name.toLowerCase()}.gif`;
     }
 
     burnCalories() {

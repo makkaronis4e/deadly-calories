@@ -2,7 +2,7 @@
     <div class="config-wrapper">
         <div class="control">
             <div class="control__header">
-                <img src="../assets/img/poison.webp" alt="Poison" />
+                <img src="/img/poison.webp" alt="Poison" />
                 <span>{{ $t('config.poison_chance') }}</span>
             </div>
             <v-text-field
@@ -15,7 +15,7 @@
         </div>
         <div class="control">
             <div class="control__header">
-                <img src="../assets/img/hp.webp" alt="Health points" />
+                <img src="/img/hp.webp" alt="Health points" />
                 <span>{{ $t('config.initial_calories') }}</span>
             </div>
             <v-text-field

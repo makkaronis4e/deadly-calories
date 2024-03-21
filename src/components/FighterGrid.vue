@@ -5,7 +5,9 @@ const props = defineProps({
     fighters: Array<Fighter>,
     activeFighter: Fighter,
 });
+
 defineEmits<{ (event: 'fighterSelected', value: Fighter): void }>();
+
 </script>
 
 <template>
