@@ -6,15 +6,17 @@ import { useTheme } from 'vuetify'
 import { Language, Theme } from '@/common/utils/constants/shared'
 import { getFromLocalStorage, LocalStorageToken, saveToLocalStorage } from '@/common/utils/functions/storage'
 import { getMediaPreference } from '@/common/utils/functions/helpers'
-import { useConfigStore } from '@/stores/config'
+import { useGameStore } from '@/stores/store'
 import type { GameConfig } from '@/common/utils/models/interfaces'
+import { onMounted } from 'vue'
+import Kanelboller from '@/components/Kanelboller.vue'
 
 const i18n = useI18n()
 const theme = useTheme()
 const langs = [Language.En, Language.No]
-const version = import.meta.env.VITE_APP_VERSION || 'dev'
-const store = useConfigStore()
-const router = useRouter()
+const version = import.meta.env.VITE_APP_VERSION || 'dev';
+const store = useGameStore();
+const router = useRouter();
 
 const onLanguageChange = (lang: string) => {
 	i18n.locale.value = lang
@@ -29,44 +31,70 @@ const onThemeChange = () => {
 	saveToLocalStorage(LocalStorageToken.Theme, newTheme)
 }
 
-store.$subscribe((state) => {
-	console.log(state)
-	// router.push({ query: { config: newConfig } });
+onMounted(() => {
+	store.generateFighters();
 })
 </script>
 
 <template>
-	<header>
-		<div class="version">{{ version }}</div>
-		<div class="page-settings">
-			<div class="lang-selection">
+	<div class="page">
+		<header>
+			<div class="version">{{ version }}</div>
+			<div class="tag">
+				<div class="tag__text">{{ $t('start.deadly_calories_edition') }}</div>
+				<Kanelboller size="40" />
+			</div>
+			<div class="page-settings">
+				<div class="lang-selection">
             <span
 				:class="{ active: i18n.locale.value === lang }"
 				@click="onLanguageChange(lang)"
-				v-for="lang in langs"
-			>{{ lang.toUpperCase() }}</span
-			>
+				v-for="lang in langs">{{ lang.toUpperCase() }}</span>
+				</div>
+				<div class="theme-selection">
+					<v-icon @click="onThemeChange()">
+						{{ theme.global.current.value.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night' }}
+					</v-icon>
+				</div>
 			</div>
-			<div class="theme-selection">
-				<v-icon @click="onThemeChange()">
-					{{ theme.global.current.value.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night' }}
-				</v-icon>
-			</div>
+		</header>
+		<div v-if="store.selectedFighter">
+			<RouterView />
 		</div>
-	</header>
-	<RouterView />
+	</div>
+
 </template>
 
 <style scoped lang="scss">
+
+.page {
+	min-height: 100vh;
+	background-image: url('/img/config-bg.png');
+	background-repeat: repeat;
+}
+
 header {
-	height: 2rem;
+	height: 4rem;
 	width: 100%;
 	z-index: 100;
-	position: fixed;
 	padding: 1rem 2rem 0;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
+	.tag {
+		display: flex;
+		align-items: center;
+		padding: 4px 5rem;
+
+		&__text {
+			font-family: 'mk2', serif;
+			font-weight: 500;
+			margin-right: 1rem;
+			color: white;
+			text-shadow: 2px 2px 2px #181818;
+		}
+	}
 
 	.page-settings {
 		display: flex;

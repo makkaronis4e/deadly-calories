@@ -1,57 +1,157 @@
 <template>
-    <div class="wrapper" @click="handleEvent">
-        <div class="tag">
-            <div class="tag__text">{{ $t('start.deadly_calories_edition') }}</div>
-            <Kanelboller size="40" />
-        </div>
-    </div>
+	<div class="wrapper">
+		<div class="header"></div>
+		<div class="content">
+			<div class="left-col"></div>
+			<div class="arena">
+				<div class="fighter" :id="fighter.name" v-for="fighter of store.availableFighters">
+					<Fighter :fighter="fighter"/>
+				</div>
+				<div
+					class="cookie"
+					:key="cookie.id"
+					v-for="cookie of cookies">
+					<Kanelboller size="24" :poisoned="cookie.poisoned" :calories="cookie.calories"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<v-btn v-if="store.aliveFighters.length > 1" @click="startRound()"></v-btn>
+
 </template>
 
 <script setup lang="ts">
-import Kanelboller from '@/components/Kanelboller.vue';
-import { onMounted, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, type Ref, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useGameStore } from '@/stores/store'
+import Kanelboller from '@/components/Kanelboller.vue'
+import type { Cookie } from '@/common/utils/models/classes'
+import { queryObjectToConfig } from '@/common/utils/functions/helpers'
+import Fighter from '@/components/Fighter.vue'
 
-const router = useRouter();
-
-const handleEvent = () => {
-    router.push('/config');
-};
-
+const route = useRoute()
+const store = useGameStore()
+const cookies: Ref<Cookie[]> = ref([]);
 onMounted(() => {
-    document.addEventListener('keydown', handleEvent);
-});
+	store.updateConfig(queryObjectToConfig(route.query));
+})
 
-onUnmounted(() => {
-    document.removeEventListener('keydown', handleEvent);
-});
+const startRound = () => {
+	const aliveFighters = store.aliveFighters;
+	if (aliveFighters.length  < 2) {
+		return;
+	}
+	store.generateNewRound();
+	console.log(1);
+	cookies.value = aliveFighters.map(() => {
+		return store.cookieBuilder.bake();
+	})
+	setTimeout(() => {
+		const kanelbollers = Array.from(document.querySelectorAll('.cookie')) as HTMLElement[];
+
+		store.aliveFighters.forEach((fighter, index) => {
+			const cookie = kanelbollers[index];
+			const fighterRef = document.getElementById(fighter.name) as HTMLElement;
+
+			const targetPosition = fighterRef.getBoundingClientRect()
+			const movingItemPosition = cookie.getBoundingClientRect()
+
+			const deltaX = targetPosition.left - movingItemPosition.left
+			const deltaY = targetPosition.top - movingItemPosition.top
+
+			cookie.style.transform = `translate(${deltaX}px, ${deltaY}px)`
+
+			setTimeout(() => {
+				cookie.remove();
+				fighter.eat(cookies.value[index]);
+			}, 1000)
+		})
+	}, 100)
+}
+
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .wrapper {
-    height: 100vh;
-    background: url('/img/welcome_bg.webp') no-repeat center;
-    background-size: cover;
-    position: relative;
-    cursor: pointer;
+	height: 100vh;
+	position: relative;
+	display: flex;
+	flex-direction: column;
 }
 
-.tag {
-    position: fixed;
-    right: -6rem;
-    top: 5rem;
-    display: flex;
-    align-items: center;
-    background-color: var(--mk-main-color);
-    padding: 4px 5rem;
-    transform: rotate(45deg);
-
-    &__text {
-        font-family: 'mk2', serif;
-        font-weight: 500;
-        margin-right: 1rem;
-        color: white;
-        text-shadow: 2px 2px 2px #181818;
-    }
+.header {
+	height: 3rem;
+	width: 100%;
+	background: red;
+	margin-bottom: 1rem;
 }
+
+
+.content {
+	flex: 1;
+	display: flex;
+}
+
+
+.left-col {
+	width: 20rem;
+}
+
+.arena {
+	position: relative;
+	flex: 1;
+	width: 400px;
+	height: 400px;
+	border-radius: 50%;
+}
+
+.fighter {
+	border-radius: 50%;
+	position: absolute;
+
+	&.dead {
+		filter: grayscale(100%);
+	}
+
+	&:nth-child(1) {
+		top: calc(50% - 200px);
+		left: 50%;
+	}
+
+	&:nth-child(2) {
+		top: calc(50% - 200px * cos(60deg));
+		left: calc(50% + 300px * sin(60deg));
+	}
+
+	&:nth-child(3) {
+		top: calc(50% - 200px * cos(120deg));
+		left: calc(50% + 300px * sin(120deg));
+	}
+
+	&:nth-child(4) {
+		top: calc(50% + 200px);
+		left: 50%;
+	}
+
+	&:nth-child(5) {
+		top: calc(50% - 200px * cos(240deg));
+		left: calc(50% + 300px * sin(240deg));
+	}
+
+	&:nth-child(6) {
+		top: calc(50% - 200px * cos(300deg));
+		left: calc(50% + 300px * sin(300deg));
+	}
+}
+
+.cookie {
+	position: absolute;
+	z-index: 1000;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	transition: all 1s ease;
+}
+
+
 </style>

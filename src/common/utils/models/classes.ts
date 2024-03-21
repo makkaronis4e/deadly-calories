@@ -66,17 +66,21 @@ export class Fighter {
         }
         currentRound.events.push(message);
     }
+
+    cloneSelf(): Fighter {
+        return JSON.parse(JSON.stringify(this));
+    }
 }
 
 export class CookieBuilder {
-    poisonChance: number;
-    caloriesMax: number;
-    caloriesMin: number;
+    private poisonChance: number;
+    private caloriesMax: number;
+    private caloriesMin: number;
 
-    constructor(poisonChance = 0.2, caloriesMax = 0.1, caloriesMin = 2) {
+    constructor(poisonChance = 0.2, caloriesRange = [0.2, 2]) {
         this.poisonChance = poisonChance;
-        this.caloriesMax = caloriesMax;
-        this.caloriesMin = caloriesMin;
+        this.caloriesMax = caloriesRange[1];
+        this.caloriesMin = caloriesRange[0];
     }
 
     bake(): Cookie {
@@ -89,9 +93,27 @@ export class CookieBuilder {
 export class Cookie {
     calories: number;
     poisoned: boolean;
+    id: string;
 
     constructor(calories: number, poisoned: boolean) {
         this.calories = calories;
         this.poisoned = poisoned;
+        this.id = "id" + Math.random().toString(16).slice(2)
     }
+}
+
+export class Round {
+    num: number;
+    snapshot: Fighter[];
+    finished = false;
+
+    constructor(num: number, snapshot: Fighter[]) {
+        this.num = num;
+        this.snapshot = snapshot;
+    }
+
+    finishRound() {
+        this.finished = true;
+    }
+
 }

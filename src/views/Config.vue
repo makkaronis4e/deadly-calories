@@ -3,54 +3,40 @@
         <div class="left-col" v-if="configForm">
             <h3 class="title">{{ $t('config.create_config') }}</h3>
             <CompetitionConfig :config-form="configForm" />
+			<v-btn type="submit" class="start" size="x-large" color="var(--mk-main-color)">{{
+					$t('config.serve')
+				}}</v-btn>
         </div>
         <div class="right-col">
             <div class="fighters-grid">
-                <FighterGrid
-                    v-if="selectedFighter"
-                    @fighter-selected="setSelectedFighter"
-                    :active-fighter="selectedFighter"
-                    :fighters="availableFighters"
-                />
+                <FighterGrid />
             </div>
-            <v-btn type="submit" class="start" size="x-large" color="var(--mk-main-color)">{{
-                $t('config.serve')
-            }}</v-btn>
+			<audio controls>
+				<source src="/mka.mp3" type="audio/mp3">
+				Your browser does not support the audio element.
+			</audio>
         </div>
     </form>
 </template>
 <script setup lang="ts">
-import { onMounted, type Ref, watch } from 'vue'
-import { FIGHTERS } from '@/common/utils/constants/fighters';
-import { Fighter } from '@/common/utils/models/classes';
+import { type Ref } from 'vue'
 import FighterGrid from '@/components/FighterGrid.vue';
 import CompetitionConfig from '@/components/CompetitionConfig.vue';
 import { ref } from 'vue';
-import { useConfigStore } from '@/stores/config';
+import { useGameStore } from '@/stores/store';
 import type { GameConfig } from '@/common/utils/models/interfaces';
-let availableFighters: Ref<Fighter[]> = ref([]);
-let selectedFighter: Ref<Fighter | null> = ref(null);
-const configStore = useConfigStore();
+
+const configStore = useGameStore();
 const configForm: Ref<GameConfig> = ref({
     caloriesRange: [0.2, 2],
     poisonChance: 0.2,
     startingCalories: 5,
 });
-onMounted(() => {
-    availableFighters.value = FIGHTERS.map((fighter) => new Fighter(fighter));
-    selectedFighter.value = availableFighters.value[0];
-});
 
-watch(configForm.value, (newConfig) => {
-	console.log(newConfig);
-});
+const handleSubmit = () => {
+    configStore.updateConfig(configForm.value, true);
+};
 
-const setSelectedFighter = (fighter: Fighter) => {
-    selectedFighter.value = fighter;
-};
-const handleSubmit = (payload: Event) => {
-    configStore.updateConfig(configForm.value);
-};
 </script>
 <style scoped lang="scss">
 @media (min-width: 1024px) {
@@ -59,8 +45,6 @@ const handleSubmit = (payload: Event) => {
         display: flex;
         justify-content: center;
         padding: 2rem 1rem 1rem;
-        background-image: url('/img/config-bg.png');
-        background-repeat: repeat;
 
         .left-col {
             flex: 1;
@@ -96,5 +80,22 @@ const handleSubmit = (payload: Event) => {
             }
         }
     }
+}
+
+audio {
+	width: 100px;
+	margin-top: 2rem;
+}
+
+audio::-webkit-media-controls-volume-slider,
+audio::-webkit-media-controls-timeline-container,
+audio::-webkit-media-controls-time-remaining-display,
+audio::-webkit-media-controls-timeline {
+	display: none !important;
+}
+
+audio::-webkit-media-controls-panel {
+	padding: 0 0 0 1px;
+	justify-content: center; /*control panel elements are flex positioned*/
 }
 </style>

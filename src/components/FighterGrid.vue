@@ -1,27 +1,22 @@
 <script setup lang="ts">
-import { Fighter } from '@/common/utils/models/classes';
+import { useGameStore } from '@/stores/store'
 
-const props = defineProps({
-    fighters: Array<Fighter>,
-    activeFighter: Fighter,
-});
-
-defineEmits<{ (event: 'fighterSelected', value: Fighter): void }>();
+const store = useGameStore();
 
 </script>
 
 <template>
     <div class="fighters-wrapper">
         <div class="preview">
-            <img :src="props.activeFighter?.animatedImage" alt="Active Fighter" />
-            <div class="preview__name">{{ props.activeFighter?.name }}</div>
+            <img :src="store.selectedFighter?.animatedImage" alt="Active Fighter" />
+            <div class="preview__name">{{ store.selectedFighter?.name }}</div>
         </div>
         <div class="grid">
             <div
                 class="grid__item"
-                v-for="fighter in props.fighters"
-                @click="() => $emit('fighterSelected', fighter)"
-                :class="{ active: props.activeFighter?.name === fighter.name }"
+                v-for="fighter in store.availableFighters"
+                @click="() => store.selectFighter(fighter.name)"
+                :class="{ active: store.selectedFighter?.name === fighter.name }"
                 :key="fighter.name"
             >
                 <img :src="fighter.staticImage" :alt="fighter.name" />
