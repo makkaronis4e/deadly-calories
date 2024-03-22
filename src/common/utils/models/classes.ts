@@ -1,5 +1,6 @@
 import type { FighterLog } from '@/common/utils/models/interfaces';
 import { AnimationType } from '@/common/utils/constants/fighters';
+import { toRaw } from 'vue'
 
 export class Fighter {
     name: string;
@@ -68,11 +69,6 @@ export class Fighter {
             return;
         }
         currentRound.events.push(message);
-        console.log(this.log);
-    }
-
-    cloneSelf(): Fighter {
-        return JSON.parse(JSON.stringify(this));
     }
 
     calculatePercentageOfHealth() {
@@ -107,7 +103,7 @@ export class Cookie {
     constructor(calories: number, poisoned: boolean) {
         this.calories = calories;
         this.poisoned = poisoned;
-        this.id = "id" + Math.random().toString(16).slice(2)
+        this.id = 'id' + Math.random().toString(16).slice(2);
     }
 }
 
@@ -124,5 +120,4 @@ export class Round {
     finishRound(reset?: boolean) {
         this.finished = !reset;
     }
-
 }

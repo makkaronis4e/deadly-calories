@@ -3,27 +3,27 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, type Ref, ref } from 'vue'
+import { onMounted, type Ref, ref } from 'vue';
 const props = defineProps({
-	size: {
-		type: String,
-		default: '20',
-	},
-	poisoned: {
-		type: Boolean,
-		default: false,
-	},
-	calories: {
-		type: Number,
-		default: 0,
-	},
+    size: {
+        type: String,
+        default: '20',
+    },
+    poisoned: {
+        type: Boolean,
+        default: false,
+    },
+    calories: {
+        type: Number,
+        default: 0,
+    },
 });
 
 let cookieStyle: Ref<Record<string, string> | undefined> = ref();
 onMounted(() => {
-	cookieStyle.value = {
-		'--image-height': props.size + 'px',
-	};
+    cookieStyle.value = {
+        '--image-height': props.size + 'px',
+    };
 });
 </script>
 

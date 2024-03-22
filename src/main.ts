@@ -10,7 +10,7 @@ import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 
 import { createApp } from 'vue';
-import { markRaw } from 'vue'
+import { markRaw } from 'vue';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
 
@@ -19,14 +19,14 @@ import router from './router';
 import { Language, Theme } from '@/common/utils/constants/shared';
 import { getFromLocalStorage, LocalStorageToken } from '@/common/utils/functions/storage';
 import { getMediaPreference } from '@/common/utils/functions/helpers';
-import type { Router } from 'vue-router'
+import type { Router } from 'vue-router';
 
 declare module 'pinia' {
     export interface Pinia {
-        router: () => Router
+        router: () => Router;
     }
     export interface PiniaCustomProperties {
-        router: Router
+        router: Router;
     }
 }
 
@@ -61,7 +61,7 @@ const i18n = createI18n({
 const pinia = createPinia();
 
 pinia.use(({ store }) => {
-    store.router = markRaw(router)
+    store.router = markRaw(router);
 });
 pinia.router = (): Router => router;
 

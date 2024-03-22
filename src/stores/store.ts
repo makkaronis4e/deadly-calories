@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import type { GameConfig } from '@/common/utils/models/interfaces';
-import { useRouter } from 'vue-router'
-import { FIGHTERS } from '@/common/utils/constants/fighters'
-import { CookieBuilder, Fighter, Round } from '@/common/utils/models/classes'
+import { FIGHTERS } from '@/common/utils/constants/fighters';
+import { CookieBuilder, Fighter, Round } from '@/common/utils/models/classes';
+import { cloneDeep } from 'lodash'
+
 export const useGameStore = defineStore('config', {
     state: () => ({
         availableFighters: [] as Fighter[],
@@ -38,7 +39,12 @@ export const useGameStore = defineStore('config', {
             }
         },
         generateNewRound() {
-            this.rounds.push(new Round(this.rounds.length, this.availableFighters.map((fighter) => fighter.cloneSelf())));
+            this.rounds.push(
+                new Round(
+                    this.rounds.length,
+                    this.availableFighters.map((fighter) => cloneDeep(fighter) as Fighter),
+                ),
+            );
             this.activeRound = this.rounds.length;
         },
         finishRound() {
@@ -47,8 +53,7 @@ export const useGameStore = defineStore('config', {
         resetToRound(round: number) {
             this.activeRound = round;
             this.availableFighters = this.rounds[round].snapshot;
-            this.rounds = this.rounds.slice(0, round + 1);
-            this.rounds[round].finishRound(true);
-        }
+            this.rounds = this.rounds.slice(0, round);
+        },
     },
 });

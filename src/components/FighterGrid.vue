@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useGameStore } from '@/stores/store'
+import { useGameStore } from '@/stores/store';
 
 const store = useGameStore();
-
 </script>
 
 <template>

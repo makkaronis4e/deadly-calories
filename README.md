@@ -1,18 +1,41 @@
-# deadly-calories
+# Deadly calories
 
-This template should help get you started developing with Vue 3 in Vite.
+This project is a simple implementation of the test task for the position of a front-end developer.
 
-## Recommended IDE Setup
+## Deployments
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+On each push to the `main` branch, the project is automatically deployed to [Vercel](https://vercel.com/) and [GitHub Pages](https://pages.github.com/).
+GitHub Pages is not supporting SPA properly, so for the testing purposes it is better to use Vercel environment.
 
-## Type Support for `.vue` Imports in TS
+## Implemented features
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+-   [x] There are list of 6 Mortal Kombat fighters available for selection.
+-   [x] Each fighter has a name, a static image and a list of 3 animated images, which are displayed based on the fighter's state.
+-   [x] Configuration includes the following params: 'starting calories', 'calories range', 'poison chance'.
+-   [x] Application uses Pinia for state management.
+-   [x] Configuration is stored in the store and game page is loaded with the url query params. Query params are source of truth and have highest priority.
+-   [x] Application uses Composition API.
+-   [x] As component library is used Vuetify.
+-   [x] Application supports english and norwegian languages.
+-   [x] Application supports dark and light themes.
+-   [x] Theme and language are stored in the local storage.
+-   [x] Styles are written in SCSS.
+-   [x] Prettier and ESLint are used for code formatting and linting.
+-   [x] Game can be restarted from any round.
+-   [x] Logs stored by each fighter for each round and can be viewed in the game page (by hovering over the fighter's image).
+-   [x] Logs export is available as a CSV file.
 
-## Customize configuration
+## Tech stack
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+-   pnpm
+-   Vue 3
+-   Vite
+-   Vuetify
+-   Pinia
+-   Vue-i18n
+-   ESLint
+-   Prettier
+-   SCSS
 
 ## Project Setup
 
