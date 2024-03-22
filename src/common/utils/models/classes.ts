@@ -73,7 +73,7 @@ export class Fighter {
 
     calculatePercentageOfHealth() {
         const percentage = (this.health / this.maxHealth) * 100;
-        this.percentageOfHealth = percentage > 0 ? percentage + '%' : 'game.dead';
+        this.percentageOfHealth = percentage > 0 ? percentage.toFixed(0) + '%' : 'game.dead';
     }
 }
 
@@ -89,9 +89,10 @@ export class CookieBuilder {
     }
 
     bake(): Cookie {
-        const calories = Math.floor(Math.random() * (this.caloriesMax - this.caloriesMin + 1) + this.caloriesMin);
+        const calories = (Math.random() * (this.caloriesMax - this.caloriesMin + 1) + this.caloriesMin).toFixed(2);
+
         const poisoned = Math.random() < this.poisonChance;
-        return new Cookie(calories, poisoned);
+        return new Cookie(+calories, poisoned);
     }
 }
 
