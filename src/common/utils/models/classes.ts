@@ -52,7 +52,7 @@ export class Fighter {
     burnCalories() {
         this.health -= 1;
         this.updateAnimation();
-        this.writeLog('Round ended. Burned 1 calorie! Current HP is: ' + this.health);
+        this.writeLog('Round ended. Burned 1 calorie! Current HP is: ' + this.health.toFixed(2));
         if (this.health <= 0) {
             this.isAlive = false;
             this.writeLog('Fighter is dead!');
