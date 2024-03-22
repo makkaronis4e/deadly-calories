@@ -1,6 +1,8 @@
 import { Theme } from '@/common/utils/constants/shared';
 import type { GameConfig } from '@/common/utils/models/interfaces'
 import type { LocationQueryValue } from 'vue-router'
+import type { Fighter } from '@/common/utils/models/classes'
+import type { UnwrapRef } from 'vue'
 
 export const getMediaPreference = (): string => {
     const hasDarkPreference = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -17,6 +19,28 @@ export const queryObjectToConfig = (obj: Record<string, LocationQueryValue | Loc
         poisonChance,
         startingCalories
     }
+}
+
+export const exportToCSV = (filename: string, data: Fighter[]) => {
+    let csvContent = "data:text/csv;charset=utf-8,";
+
+    // Add headers
+    csvContent += "Entity,Round,Event\n";
+
+    // Add data
+    data.forEach(entity => {
+        entity.log.forEach(log => {
+            csvContent += `${entity.name},${log.round},"${log.events.join("; ")}"\n`;
+        });
+    });
+
+    // Create a link element and trigger the download
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link); // Required for Firefox
+    link.click();
 }
 
 

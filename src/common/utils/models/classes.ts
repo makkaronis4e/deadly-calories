@@ -3,25 +3,23 @@ import { AnimationType } from '@/common/utils/constants/fighters';
 
 export class Fighter {
     name: string;
+
     animatedImage: string;
     staticImage: string;
+    isAlive = true;
+    percentageOfHealth = '100%';
     eating = false;
+    log: FighterLog[] = [];
+
+    private maxHealth: number;
     private health: number;
     private round = 0;
-    private log: FighterLog[] = [];
-
-    calories(): number {
-        return this.health;
-    }
-
-    get isAlive(): boolean {
-        return this.health > 0;
-    }
 
     constructor(name: string, calories: number = 5) {
         this.name = name;
         this.animatedImage = `./img/fighters/${AnimationType.Normal}/${name.toLowerCase()}.gif`;
         this.staticImage = `./img/fighters/${AnimationType.Static}/${name.toLowerCase()}.png`;
+        this.maxHealth = calories;
         this.health = calories;
     }
 
@@ -39,7 +37,8 @@ export class Fighter {
                 }
                 this.eating = false;
                 this.burnCalories();
-            }, 1000);
+                this.calculatePercentageOfHealth();
+            }, 100);
         }
     }
 
@@ -52,9 +51,13 @@ export class Fighter {
     burnCalories() {
         this.health -= 1;
         this.updateAnimation();
-        this.writeLog('Round ended. Burned 1 calorie!');
+        this.writeLog('Round ended. Burned 1 calorie! Current HP is: ' + this.health);
         if (this.health <= 0) {
+            this.isAlive = false;
             this.writeLog('Fighter is dead!');
+            setTimeout(() => {
+                this.animatedImage = `./img/fighters/dead/grave.webp`;
+            }, 1000);
         }
     }
 
@@ -65,10 +68,16 @@ export class Fighter {
             return;
         }
         currentRound.events.push(message);
+        console.log(this.log);
     }
 
     cloneSelf(): Fighter {
         return JSON.parse(JSON.stringify(this));
+    }
+
+    calculatePercentageOfHealth() {
+        const percentage = (this.health / this.maxHealth) * 100;
+        this.percentageOfHealth = percentage > 0 ? percentage + '%' : 'game.dead';
     }
 }
 
@@ -112,8 +121,8 @@ export class Round {
         this.snapshot = snapshot;
     }
 
-    finishRound() {
-        this.finished = true;
+    finishRound(reset?: boolean) {
+        this.finished = !reset;
     }
 
 }

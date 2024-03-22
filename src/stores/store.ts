@@ -30,15 +30,25 @@ export const useGameStore = defineStore('config', {
         updateConfig(payload: GameConfig, navigate?: boolean) {
             this.config = payload;
             this.cookieBuilder = new CookieBuilder(this.config.poisonChance, this.config.caloriesRange);
-
+            //we need to clear state if user changes config
+            this.generateFighters();
+            this.rounds = [];
             if (navigate) {
                 this.router.push({ path: '/game', query: { ...this.config } });
             }
         },
         generateNewRound() {
-            console.log(this.rounds)
             this.rounds.push(new Round(this.rounds.length, this.availableFighters.map((fighter) => fighter.cloneSelf())));
             this.activeRound = this.rounds.length;
+        },
+        finishRound() {
+            this.rounds[this.activeRound - 1].finishRound();
+        },
+        resetToRound(round: number) {
+            this.activeRound = round;
+            this.availableFighters = this.rounds[round].snapshot;
+            this.rounds = this.rounds.slice(0, round + 1);
+            this.rounds[round].finishRound(true);
         }
     },
 });

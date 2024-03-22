@@ -8,5 +8,13 @@
         "poison_chance": "Poison Chance",
         "calories_range": "Calories Range",
         "serve": "Serve Kaneboller!"
+    },
+    "game": {
+        "rounds": "Rounds",
+        "start": "Start New Round",
+        "round": "Round %{num}",
+        "download": "Download Report",
+        "dead": "Dead",
+        "back": "Back to configuration"
     }
 }

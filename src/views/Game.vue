@@ -1,23 +1,35 @@
 <template>
 	<div class="wrapper">
-		<div class="header"></div>
+		<div class="header">
+			<v-btn :disabled="roundInProgress ||  store.aliveFighters.length < 2" @click="startRound()" size="x-large"
+				   color="var(--mk-main-color)">{{ $t('game.start') }}
+			</v-btn>
+			<div class="right-buttons">
+			<v-btn cto="/" variant="outlined" size="x-large">{{ $t('game.back') }}
+			</v-btn>
+			<v-btn :disabled="store.rounds.length === 0" @click="exportData()" size="x-large">{{ $t('game.download') }}
+			</v-btn>
+			</div>
+		</div>
 		<div class="content">
-			<div class="left-col"></div>
+			<div class="left-col">
+				<div class="rounds-wrapper">
+					<RoundsProgress @reset="store.resetToRound" :rounds="store.rounds as Round[]" />
+				</div>
+			</div>
 			<div class="arena">
 				<div class="fighter" :id="fighter.name" v-for="fighter of store.availableFighters">
-					<Fighter :fighter="fighter"/>
+					<Fighter :fighter="fighter" />
 				</div>
 				<div
 					class="cookie"
 					:key="cookie.id"
 					v-for="cookie of cookies">
-					<Kanelboller size="24" :poisoned="cookie.poisoned" :calories="cookie.calories"/>
+					<Kanelboller size="24" :poisoned="cookie.poisoned" :calories="cookie.calories" />
 				</div>
 			</div>
 		</div>
 	</div>
-	<v-btn v-if="store.aliveFighters.length > 1" @click="startRound()"></v-btn>
-
 </template>
 
 <script setup lang="ts">
@@ -25,33 +37,39 @@ import { onMounted, type Ref, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGameStore } from '@/stores/store'
 import Kanelboller from '@/components/Kanelboller.vue'
-import type { Cookie } from '@/common/utils/models/classes'
-import { queryObjectToConfig } from '@/common/utils/functions/helpers'
+import { type Cookie, Round } from '@/common/utils/models/classes'
+import { exportToCSV, queryObjectToConfig } from '@/common/utils/functions/helpers'
 import Fighter from '@/components/Fighter.vue'
+import RoundsProgress from '@/components/RoundsProgress.vue'
 
 const route = useRoute()
 const store = useGameStore()
-const cookies: Ref<Cookie[]> = ref([]);
+const cookies: Ref<Cookie[]> = ref([])
+const roundInProgress: Ref<boolean> = ref(false)
 onMounted(() => {
-	store.updateConfig(queryObjectToConfig(route.query));
+	store.updateConfig(queryObjectToConfig(route.query))
 })
 
+const exportData = () => {
+	exportToCSV('test', store.availableFighters);
+}
+
 const startRound = () => {
-	const aliveFighters = store.aliveFighters;
-	if (aliveFighters.length  < 2) {
-		return;
+	const aliveFighters = store.aliveFighters
+	if (aliveFighters.length < 2) {
+		return
 	}
-	store.generateNewRound();
-	console.log(1);
+	roundInProgress.value = true;
+	store.generateNewRound()
 	cookies.value = aliveFighters.map(() => {
-		return store.cookieBuilder.bake();
+		return store.cookieBuilder.bake()
 	})
 	setTimeout(() => {
-		const kanelbollers = Array.from(document.querySelectorAll('.cookie')) as HTMLElement[];
+		const kanelbollers = Array.from(document.querySelectorAll('.cookie')) as HTMLElement[]
 
 		store.aliveFighters.forEach((fighter, index) => {
-			const cookie = kanelbollers[index];
-			const fighterRef = document.getElementById(fighter.name) as HTMLElement;
+			const cookie = kanelbollers[index]
+			const fighterRef = document.getElementById(fighter.name) as HTMLElement
 
 			const targetPosition = fighterRef.getBoundingClientRect()
 			const movingItemPosition = cookie.getBoundingClientRect()
@@ -62,8 +80,10 @@ const startRound = () => {
 			cookie.style.transform = `translate(${deltaX}px, ${deltaY}px)`
 
 			setTimeout(() => {
-				cookie.remove();
-				fighter.eat(cookies.value[index]);
+				cookie.remove()
+				fighter.eat(cookies.value[index])
+				store.finishRound();
+				roundInProgress.value = false;
 			}, 1000)
 		})
 	}, 100)
@@ -80,21 +100,30 @@ const startRound = () => {
 }
 
 .header {
-	height: 3rem;
-	width: 100%;
-	background: red;
-	margin-bottom: 1rem;
-}
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem;
 
+	.right-buttons {
+		.v-btn {
+			margin-right: 1rem;
+		}
+	}
+}
 
 .content {
+	padding: 1rem;
 	flex: 1;
 	display: flex;
+	justify-content: space-between;
 }
-
 
 .left-col {
 	width: 20rem;
+
+	v-btn {
+		margin-top: 1rem;
+	}
 }
 
 .arena {

@@ -8,5 +8,13 @@
         "poison_chance": "Giftsjanser",
         "calories_range": "Kalorierom",
         "serve": "Server Kaneboller!"
+    },
+    "game": {
+        "rounds": "Runder",
+        "start": "Start ny runde",
+        "round": "Runde %{num}",
+        "download": "Last ned rapport",
+        "dead": "Død",
+        "back": "Tilbake til konfigurasjon"
     }
 }
