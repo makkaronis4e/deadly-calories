@@ -1,8 +1,6 @@
 import { Theme } from '@/common/utils/constants/shared';
-import type { GameConfig } from '@/common/utils/models/interfaces';
+import type { FighterLog, GameConfig } from '@/common/utils/models/interfaces'
 import type { LocationQueryValue } from 'vue-router';
-import type { Fighter } from '@/common/utils/models/classes';
-import type { UnwrapRef } from 'vue';
 
 export const getMediaPreference = (): string => {
     const hasDarkPreference = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -23,7 +21,7 @@ export const queryObjectToConfig = (obj: Record<string, LocationQueryValue | Loc
     };
 };
 
-export const exportToCSV = (filename: string, data: Fighter[]) => {
+export const downloadFile = (filename: string, data: any[]) => {
     let csvContent = 'data:text/csv;charset=utf-8,';
 
     // Add headers
@@ -31,7 +29,7 @@ export const exportToCSV = (filename: string, data: Fighter[]) => {
 
     // Add data
     data.forEach((entity) => {
-        entity.log.forEach((log) => {
+        entity.log.forEach((log: FighterLog) => {
             csvContent += `${entity.name},${log.round},"${log.events.join('; ')}"\n`;
         });
     });

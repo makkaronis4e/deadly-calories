@@ -9,7 +9,7 @@
                 >{{ $t('game.start') }}
             </v-btn>
             <div class="right-buttons">
-                <v-btn cto="/" variant="outlined" size="x-large">{{ $t('game.back') }} </v-btn>
+                <v-btn to="/" variant="outlined" size="x-large">{{ $t('game.back') }} </v-btn>
                 <v-btn :disabled="store.rounds.length === 0" @click="exportData()" size="x-large"
                     >{{ $t('game.download') }}
                 </v-btn>
@@ -34,12 +34,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, type Ref, ref } from 'vue';
+import { onMounted, type Ref, ref, toRaw } from 'vue'
 import { useRoute } from 'vue-router';
 import { useGameStore } from '@/stores/store';
 import Kanelboller from '@/components/Kanelboller.vue';
 import { type Cookie, Round } from '@/common/utils/models/classes';
-import { exportToCSV, queryObjectToConfig } from '@/common/utils/functions/helpers';
+import { downloadFile, queryObjectToConfig } from '@/common/utils/functions/helpers';
 import Fighter from '@/components/Fighter.vue';
 import RoundsProgress from '@/components/RoundsProgress.vue';
 
@@ -52,7 +52,7 @@ onMounted(() => {
 });
 
 const exportData = () => {
-    exportToCSV('test', store.availableFighters);
+	downloadFile('Game_logs', [...toRaw(store.availableFighters)]);
 };
 
 const startRound = () => {
